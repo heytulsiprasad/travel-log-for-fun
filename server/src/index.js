@@ -1,12 +1,14 @@
-require("dotenv").config();
-
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://127.0.0.1:27017/travel", {
+require("dotenv").config();
+
+const db = process.env.MONGO_LOCAL_URI;
+
+mongoose.connect(db, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
@@ -23,7 +25,7 @@ app.use(express.json());
 // Adds useful secure response parameters
 app.use(helmet());
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 app.get("/", (req, res) => {
 	res.json({ message: "Hello World!" });
